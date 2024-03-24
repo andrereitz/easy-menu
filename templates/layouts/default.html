@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% if self.title() %}
+    <title>{% block title %}{% endblock %} - Easy Menu</title>
+  {% else %}  
+    <title>Easy Menu</title>
+  {% endif %}
+  {% include 'components/head.html' %}
+</head>
+<body>
+  <header>
+    <div class="container py-2 text-center">
+      <a href="/" class="w-100" style="color: var(--color-primary)">
+        {{ 'logo.svg' | load_svg | safe }}
+      </a>
+    </div>
+  </header>
+  {% include 'components/navbar.html' %}
+  {% block content %}{% endblock %}
+</body>
+</html>

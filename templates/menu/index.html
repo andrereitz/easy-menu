@@ -1,0 +1,98 @@
+{% extends "layouts/menus.html" %}
+
+{% block title %}{{ data.name }}{% endblock %}
+
+{% block content %}
+  <style>
+    html {
+      --accent-color: {{ data.color }}
+    }
+    .nav-link {
+      --bs-nav-link-color: {{ data.color }}
+    }
+    .nav-pills {
+      --bs-nav-pills-link-active-bg: {{ data.color }}
+    }
+    .nav {
+      --bs-nav-link-hover-color: {{ data.color }};
+      -ms-overflow-style: none; 
+      scrollbar-width: none;  
+    }
+    .nav::-webkit-scrollbar { 
+        display: none; 
+    }
+  </style>
+  <header class="d-flex p-2 justify-content-center">
+    <img src="/static/media/{{ data.logo }}" alt="{{ data.name }}" />
+  </header>
+  <nav id="navbar" class="navbar sticky-top bg-body-tertiary py-0 border-bottom">
+    <ul class="nav nav-pills overflow-x-auto d-block py-3 text-center w-100" style="white-space: nowrap;">
+      {% for cat in data.categories %}
+        <li class="nav-item d-inline-block mx-1">
+          <a href="#{{cat | lower}}" class="nav-link px-3">
+            {{ cat }}
+          </a>
+        </li>
+      {% endfor %}
+      {% if data.items_data["Others"] %}
+        <li class="nav-item d-inline-block mx-1">
+          <a href="#others" class="nav-link px-3">Other items</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+  <div class="container mt-3" data-bs-spy="scroll" data-bs-target="#navbar">
+    <div>
+      {%for item in data.items_data %}
+        {% if item != "Others" %}
+          <h3 id="{{ item | lower }}" class="mt-4 mb-3" style="color: var(--accent-color)">{{ item }}</h3>
+          {% for item_data in data.items_data[item] %}
+            <div class="row align-items-center justify-content-lg-end ">
+              {% if item_data.image %}
+                <div class="text-center mt-2 mb-3 col-12 col-md-3">
+                  <img style="object-fit: cover; max-width: 100%" src="/static/media/{{ item_data.image }}" />
+                </div>
+              {% endif %}
+              <div class="col col-12 col-md-9">
+                <div class="d-flex align-items-center flow-wrap gap-2 px-2">
+                  <h4 class="w-100">{{ item_data.title }}</h4>
+                  <span class="ms-auto"><strong>{{ item_data.price | usd }}</strong></span>
+                </div>
+                {%if item_data.description %}
+                  <p class="px-2">
+                    {{ item_data.description }}
+                  </p>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+      {% if data.items_data["Others"] %}
+        <div id="others" class="border-top mt-3 pt-3">
+          {% for item_data in data.items_data["Others"] %}
+            <div>
+              {% if item_data.image %}
+                <div class="text-center mt-2 mb-3 rounded">
+                  <img style="object-fit: cover;" src="/static/media/{{ item_data.image }}" />
+                </div>
+              {% endif %}
+              <div>
+                <div class="d-flex align-items-center flow-wrap gap-2 px-2">
+                  <h4 class="w-100">{{ item_data.title }}</h4>
+                  <span class="ms-auto"><strong>{{ item_data.price | usd }}</strong></span>
+                </div>
+                {%if item_data.description %}
+                  <p class="px-2">
+                    {{ item_data.description }}
+                  </p>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+  

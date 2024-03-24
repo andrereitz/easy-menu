@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% if self.title() %}
+    <title>{% block title %}{% endblock %} - Easy Menu</title>
+  {% else %}  
+    <title>Easy Menu</title>
+  {% endif %}
+  {% include "components/head.html" %}
+</head>
+<body>
+  <header class="row">
+    <a href="/" class="container pt-4 text-center" style="color: var(--color-primary)">
+      {{ 'logo.svg' | load_svg | safe }}
+    </a>
+  </header>
+  {% block content %}{% endblock %}
+</body>
+</html>

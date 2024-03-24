@@ -1,0 +1,13 @@
+{% extends "layouts/forms.html" %}
+
+{% block title %}Add new category{% endblock %}
+{% block form_title %}Add new category{% endblock %}
+
+{% block content %}
+  <div class="form-floating mb-3">
+    <input name="title" id="title" type="text" class="form-control" placeholder="">
+    <label for="title">Title</label>
+  </div>
+{% endblock %}
+
+{% block submit_text %}Add{% endblock %}

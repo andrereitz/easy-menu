@@ -1,0 +1,36 @@
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const floating = document.querySelector("#floating_flash");
+    if(floating) {
+      setTimeout(() => {
+        floating.style.cssText = 'transform: translate(-50%, 100px) !important';
+      }, 3000)
+    }
+  })
+</script>
+<style>
+  #floating_flash {
+    transition: all .4s ease-out;
+  }
+</style>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div 
+        class="alert alert-{{ category }} mt-2 mb-3 d-flex gap-2 position-fixed bottom-0 start-50 translate-middle-x" 
+        role="alert" 
+        id="floating_flash"
+        style="max-width: 600px"
+      >
+        {% if category == 'success' %}
+          <i class="bi bi-check-circle-fill"></i>
+        {% elif category == 'info' %}
+          <i class="bi bi-info-circle-fill"></i>
+        {% else %}
+          <i class="bi bi-exclamation-octagon-fill ml-3"></i>
+        {% endif %}
+        {{ message | safe }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}

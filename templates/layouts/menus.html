@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% if self.title() %}
+    <title>{% block title %}{% endblock %}</title>
+  {% else %}  
+    <title>Easy Menu</title>
+  {% endif %}
+  {% include "components/head.html" %}
+</head>
+<body>
+  {% block content %}{% endblock %}
+</body>
+</html>

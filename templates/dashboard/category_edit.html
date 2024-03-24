@@ -1,0 +1,14 @@
+{% extends "layouts/forms.html" %}
+
+{% block title %}Edit category {{ data.title }}{% endblock %}
+{% block form_title %}Edit category {{ data.title }}{% endblock %}
+
+{% block content %}
+  <div class="form-floating mb-3">
+    <input name="title" id="title" type="text" class="form-control" value="{{ data.title }}" placeholder="">
+    <label for="title">Title</label>
+  </div>
+  <a href="/category/delete/{{ data.id }}" class="btn btn-lg btn-danger justify-self-end">Delete</a>
+{% endblock %}
+
+{% block submit_text %}Save{% endblock %}

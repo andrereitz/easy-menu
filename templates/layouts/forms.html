@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% if self.title() %}
+    <title>{% block title %}{% endblock %} - Easy Menu</title>
+  {% else %}  
+    <title>Easy Menu</title>
+  {% endif %}
+  {% include 'components/head.html' %}
+  <script type="text/javascript">
+    {% raw %}    
+      document.addEventListener("DOMContentLoaded", (event) => {
+        const back_button = document.querySelector('#go_back');
+        back_button.addEventListener('click', function(){
+          history.back()
+        });
+      });
+    {% endraw %}
+  </script>
+</head>
+<body>
+  <header class="row">
+    <a href="/dashboard" class="container pt-4 text-center" style="color: var(--color-primary)">
+      {{ 'logo.svg' | load_svg | safe }}
+    </a>
+  </header>
+  <div style="max-width: 500px" class="container-fluid d-flex flex-column justify-content-center shadow rounded content-block mt-5 p-0">
+    <nav class="d-flex gap-3 p-2 align-items-center w-100 rounded" style="background: var(--color-primary); color: white">
+      <button class="btn" style="color: var(--link-color)" id="go_back">
+        <i class="bi bi-arrow-left fs-4" id="go_back"></i>
+      </button>
+      {% if self.form_title %}
+        <h2 class="fs-4 m-0">{% block form_title %}{% endblock %}</h2>
+      {% endif %}
+    </nav>
+    <form class="w-100 p-4" enctype="multipart/form-data" method="post">
+      {% include "components/flash_inline.html" %}
+
+      {% block content %}{% endblock %}
+
+      <button type="submit" class="btn btn-lg btn-primary float-end">{% block submit_text %}{% endblock %}
+      </button>
+    </form>
+  </div>
+</body>
+</html>
