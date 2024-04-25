@@ -1,0 +1,23 @@
+{
+  "name": "easy-menu",
+  "version": "1.0.0",
+  "description": "## About this project",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:ts": "node ./scripts/dev.js",
+    "dev:server": ". .venv/bin/activate && flask run",
+    "build": "rm -rf static/js/* && node ./scripts/build.js"
+  },
+  "author": "Andre Reitz",
+  "license": "ISC",
+  "devDependencies": {
+    "@webcomponents/webcomponentsjs": "^2.8.0",
+    "esbuild": "^0.20.2",
+    "typescript": "^5.4.5"
+  },
+  "type": "module",
+  "dependencies": {
+    "lodash.template": "^4.5.0"
+  }
+}
