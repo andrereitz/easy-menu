@@ -20,9 +20,7 @@ export class FlashFloating extends HTMLElement {
     return JSON.parse(data);
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    console.log(`Attribute ${name} has changed.`);
-    
+  attributeChangedCallback(name, oldValue, newValue) {   
     clearTimeout(window.flashTimeout)
     this.render()
   }

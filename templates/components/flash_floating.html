@@ -1,13 +1,3 @@
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const floating = document.querySelector("#floating_flash");
-    if(floating) {
-      setTimeout(() => {
-        floating.style.cssText = 'transform: translate(-50%, 100px) !important';
-      }, 3000)
-    }
-  })
-</script>
 {% with messages = get_flashed_messages(with_categories=true) %}
   <flash-floating></flash-floating>
   <script>

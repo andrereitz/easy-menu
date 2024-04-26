@@ -1,14 +1,14 @@
 {% extends "layouts/default.html" %}
 
 {% block content %}
-  {% include "components/generic_filter.html" %}
+  <generic-filter></generic-filter>
   <div class="container content-block rounded p-3">
     <h3 class="d-flex justify-content-between align-items-center flex-wrap flex-md-nowrap mb-3">
       <span class="flex-sm-grow-1">
         Your business details
       </span>
       <div class="my-3 my-md-0">
-        <a href="/business/edit" class="btn btn-outline-primary">Edit Information</a>
+        <button is="btn-cp" link="/business/edit" variant="outline-primary">Edit Information</button>
       <div>
     </h3>
     <div class="container px-0">
@@ -69,9 +69,9 @@
         Your menu items
       </span>
       <div class="my-3 my-md-0">
-        <a href="/category" class="btn btn-outline-primary">Categories</a>
-        <a href="/category/new" class="btn btn-outline-primary">Add Category</a>
-        <a href="/item/new" class="btn btn-outline-primary">Add New</a>
+        <button is="btn-cp" link="/category" variant="outline-primary">Categories</button>
+        <button is="btn-cp" link="/category/new" variant="outline-primary">Add Category</button>
+        <button is="btn-cp" link="/item/new" variant="outline-primary">Add New</button>
       <div>
     </h3>
     <div class="form-floating col col-md-6 mx-md-auto">
@@ -82,7 +82,7 @@
       {%for item in data.user_items %}
         <div class="container px-0 pt-3">
           <h3 name="{{ item }}">{{ item }}</h3>
-          <div class="row" gf-masonry>
+          <menu-items class="row" gf-masonry>
             {% for item_data in data.user_items[item] %}
               <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-2" gf-match="{{item_data.title}}">
                 <div class="rounded content-block">
@@ -104,32 +104,21 @@
                   </div>
                   <div class="px-3 pb-3 d-flex justify-content-end gap-2">
                     <form action="/item/delete/{{ item_data.id }}" method="post">
-                      <button type="submit" class="btn btn-primary" href="/item/delete/{{ item_data.id }}"><i class="bi bi-trash"></i></button>
+                      <button is="btn-cp" type="submit" variant="primary">
+                        <i class="bi bi-trash"></i>
+                      </button>
                     </form>
-                    <a class="btn btn-primary" href="/item/edit/{{ item_data.id }}"><i class="bi bi-pencil-square"></i></a>
+                    <button is="btn-cp" link="/item/edit/{{ item_data.id }}" variant="primary">
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
                   </div>
                 </div>
               </div>
             {% endfor %}
-            </div>
+          </menu-items>
         </div>
       {% endfor %}
     </div>
   </div>
   {% include "components/flash_floating.html" %}
-  <script>
-    document.addEventListener("DOMContentLoaded", (event) => {
-      const containers = document.querySelectorAll('[gf-masonry]')
-      if (containers.length == 0) return;
-
-      Array.from(containers).map(container => {
-        setTimeout(function(){
-          new Masonry(container, {
-            percentPosition: true
-          })
-        }, 300)
-      })
-    })
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
 {% endblock %}

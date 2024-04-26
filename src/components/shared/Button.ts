@@ -1,5 +1,5 @@
 import _template from 'lodash.template'
-import { compileCustomSlots } from '../helpers'
+import { compileCustomSlots } from '../../helpers'
 
 const stringtemplate = `
   <%= data.icon %>
