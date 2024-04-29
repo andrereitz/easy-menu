@@ -2,21 +2,25 @@ export class Example extends HTMLElement {
   constructor() {
     super();
 
-    console.log('this are the components children', this.children)
   }
 
   static get observedAttributes() {
-    return ['class']
+    return ['data-test']
   }
 
   connectedCallback() {
-    console.log('### connected callback called 1')
-    this.innerHTML = 'this is a test component'
+    console.log('### connected callback called')
 
+    const shadowRoot = this.attachShadow({ mode: 'open' });
+    shadowRoot.innerHTML = `
+      <div>This is a shadow root content</div>
+      ${this.innerHTML}
+    `;
   }
 
   disconnectedCallback() {
-    console.log('disconected')
+    console.log('### disconected callback called')
+
   }
 
   attributeChangedCallback(name, oldValue, newValue) {

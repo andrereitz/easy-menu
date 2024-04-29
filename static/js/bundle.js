@@ -41,6 +41,10 @@
     isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
     mod
   ));
+  var __publicField = (obj, key, value) => {
+    __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+    return value;
+  };
 
   // node_modules/ev-emitter/ev-emitter.js
   var require_ev_emitter = __commonJS({
@@ -2186,17 +2190,17 @@
   var Example = class extends HTMLElement {
     constructor() {
       super();
-      console.log("this are the components children", this.children);
     }
     static get observedAttributes() {
-      return ["class"];
+      return ["data-test"];
     }
     connectedCallback() {
-      console.log("### connected callback called 1");
-      this.innerHTML = "this is a test component";
+      console.log("### connected callback called");
+      const shadowRoot = this.attachShadow({ mode: "open" });
+      shadowRoot.innerHTML = "\n      <div>This is a shadow root content</div>\n      ".concat(this.innerHTML, "\n    ");
     }
     disconnectedCallback() {
-      console.log("disconected");
+      console.log("### disconected callback called");
     }
     attributeChangedCallback(name, oldValue, newValue) {
       console.log("Attribute ".concat(name, " has changed."));
@@ -2441,6 +2445,66 @@
     }
   };
   customElements.define("btn-cp", Button, { extends: "button" });
+
+  // src/components/shared/ButtonGoBack.ts
+  var ButtonGoBack = class extends HTMLElement {
+    constructor() {
+      super();
+    }
+    connectedCallback() {
+      this.render();
+      this.registerListeners();
+    }
+    render() {
+      const template = '\n      <button is="btn-cp" style="color: var(--link-color)">\n        '.concat(this.innerHTML, "\n      </buton>\n    ");
+      this.innerHTML = template;
+    }
+    registerListeners() {
+      this.addEventListener("click", (event) => {
+        history.back();
+      });
+    }
+  };
+  customElements.define("btn-back", ButtonGoBack);
+
+  // src/components/dashboard/MenuActions.ts
+  var MenuActions = class extends HTMLElement {
+    constructor() {
+      super();
+    }
+    connectedCallback() {
+      this.render();
+    }
+    render() {
+      const template = '\n      <div class="d-flex justify-content-center justify-content-lg-between align-items-center flex-wrap my-3">\n        <div class="form-floating ml-md-auto w-100" style="max-width: 450px">\n          <input type="text" class="form-control" id="filter" placeholder="Filter..." gf-input />\n          <label for="filter">Filter</label>\n        </div>\n        <div>\n          <button is="btn-cp" class="me-2 mt-3 mt-lg-0" link="/category" variant="outline-primary">Categories</button>\n          <button is="btn-cp" class="me-2 mt-3 mt-lg-0" link="/category/new" variant="outline-primary">Add Category</button>\n          <button is="btn-cp" class="mt-3 mt-lg-0" link="/item/new" variant="outline-primary">Add New</button>\n        </div>\n      </div>\n    ';
+      this.innerHTML = template;
+    }
+  };
+  customElements.define("menu-actions", MenuActions);
+
+  // src/components/dashboard/MenuItem.ts
+  var MenuItem = class extends HTMLElement {
+    constructor() {
+      super();
+      __publicField(this, "data", null);
+    }
+    connectedCallback() {
+      this.classList.add("col-12", "col-md-6", "col-lg-4", "col-xl-3", "p-2");
+      const payload = this.querySelector("payload");
+      if (payload) {
+        this.data = JSON.parse(payload.textContent);
+      } else {
+        throw new Error("payload element not provided, can't get item data");
+      }
+      this.render();
+    }
+    render() {
+      var _a, _b, _c, _d, _e, _f;
+      const template = '\n      <div class="rounded content-block">\n        '.concat(((_a = this.data) == null ? void 0 : _a.image) ? '<img class="w-100" style="object-fit: cover;" src="/static/media/'.concat(this.data.image, '" />') : '<img class="w-100" style="object-fit: cover;" src="/static/images/no-image.png" />', '\n        <div>\n          <div class="d-flex align-items-center gap-2 p-3">\n            <h4 gf-content>').concat((_b = this.data) == null ? void 0 : _b.title, '</h4>\n            <span class="ms-auto">').concat((_c = this.data) == null ? void 0 : _c.price.toFixed(2), "</span>\n          </div>\n          ").concat(((_d = this.data) == null ? void 0 : _d.description) && '\n            <p class="px-3 pb-3">\n              '.concat(this.data.description, "\n            </p>\n          "), '\n        </div>\n        <div class="px-3 pb-3 d-flex justify-content-end gap-2">\n          <form action="/item/delete/').concat((_e = this.data) == null ? void 0 : _e.id, '" method="post">\n            <button is="btn-cp" type="submit" variant="primary">\n              <i class="bi bi-trash"></i>\n            </button>\n          </form>\n          <button is="btn-cp" link="/item/edit/').concat((_f = this.data) == null ? void 0 : _f.id, '" variant="primary">\n            <i class="bi bi-pencil-square"></i>\n          </button>\n        </div>\n      </div>\n    ');
+      this.innerHTML = template;
+    }
+  };
+  customElements.define("menu-item", MenuItem);
 })();
 /*! Bundled license information:
 

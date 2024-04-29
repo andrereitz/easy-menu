@@ -4,21 +4,12 @@
 {% block form_title %}Add new category{% endblock %}
 
 {% block content %}
-  <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", (event) => {
-      const back_button = document.querySelector('#go_back');
-      back_button.addEventListener('click', function(){
-        history.back()
-      });
-
-    });
-  </script>
   <generic-filter></generic-filter>
   <div class="container mt-4 p-0 content-block">
     <div class="d-flex gap-3 p-2 mb-2 align-items-center w-100 rounded" style="background: var(--color-primary); color: white">
-      <button class="btn" style="color: var(--link-color)" id="go_back">
-        <i class="bi bi-arrow-left fs-4" id="go_back"></i>
-      </button>
+      <btn-back>
+        <i class="bi bi-arrow-left fs-4"></i>
+      </btn-back>
       <h2 class="fs-4 m-0">Categories</h2>
       <a href="/category/new" class="btn btn-light text-nowrap ms-auto">Add New</a>
     </div>
