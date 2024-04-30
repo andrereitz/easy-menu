@@ -15,14 +15,7 @@
     </a>
   </header>
   <div style="max-width: 500px" class="container-fluid d-flex flex-column justify-content-center shadow rounded content-block mt-5 p-0">
-    <nav class="d-flex gap-3 p-2 align-items-center w-100 rounded" style="background: var(--color-primary); color: white">
-      <btn-back>
-        <i class="bi bi-arrow-left fs-4"></i>
-      </btn-back>
-      {% if self.form_title %}
-        <h2 class="fs-4 m-0">{% block form_title %}{% endblock %}</h2>
-      {% endif %}
-    </nav>
+    <title-bar data-title="{% block form_title %}{% endblock %}"></title-bar>
     <form class="w-100 p-4" enctype="multipart/form-data" method="post">
       {% include "components/flash_inline.html" %}
 

@@ -33,6 +33,7 @@ export class FlashFloating extends HTMLElement {
 
   render() {
     if(!this.payload) return false;
+    
     const messages = this.payload.reduce((prev: string, curr: string[], index: number ) => {
       const category = curr[0];
       const text = curr[1];

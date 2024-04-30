@@ -49,7 +49,6 @@ def index():
     "user": user_data,
     "user_items": items_data if len(items_data) else [],
     "categories": categories_data if len(categories_data) else [],
-    "images": media_data if len(media_data) else [],
   }
     
   return render_template("dashboard/index.html", data=dashboard_data)

@@ -2,81 +2,15 @@
 
 {% block content %}
   <div class="container content-block rounded p-3">
-    <h3 class="d-flex justify-content-between align-items-center flex-wrap flex-md-nowrap mb-3">
-      <span class="flex-sm-grow-1">
-        Your business details
-      </span>
-      <div class="my-3 my-md-0">
-        <button is="btn-cp" link="/business/edit" variant="outline-primary">Edit Information</button>
-      <div>
-    </h3>
-    <div class="container px-0">
-      <div class="row">
-        <div class="col col-12 col-md-6 fs-5 d-flex flex-column">
-          {% if data.user.business_logo %}
-            <div class="mt-2 d-flex align-items-center gap-2">
-              <img 
-                width="100%" height="auto"
-                class="py-2 rounded"
-                style="object-fit: contain; max-width: 200px; max-height: 76px;" 
-                src="/static/media/{{ data.user.business_logo }}" 
-              />
-            </div>
-          {% endif %}
-          <span class="mt-2">
-            Your email: {{ data.user.email }}
-          </span>
-          <span class="mt-2">
-            Business name: {{ data.user.business_name }}
-          </span>
-          <span class="mt-2">
-            Business URL: {{ data.user.business_url }}
-          </span>
-          <div class="mt-2 d-flex align-items-center gap-2">
-            <span>Business Color: </span>
-            <span class="w-100 d-block rounded" style="background-color: {{ data.user.business_color }}; height: 20px; max-width: 40px"></span>
-          </div>
-        </div>
-        {% if data.user.business_url %}
-          <a 
-            href="/menu/{{data.user.business_url}}"
-            class="col col-12 col-md-6 d-flex flex-column align-items-md-end mt-2"
-          >
-            <img 
-              width="100%" height="auto"
-              class="py-2 rounded"
-              style="object-fit: contain; max-width: 250px;" 
-              src="/static/qrcodes/{{ data.user.id }}.png" 
-            />
-          </a>
-          {% else %}
-          <div class="col col-12 col-md-6 pt-2 px-2 pt-md-0">
-            <div class="alert alert-danger my-2 d-flex gap-2" role="alert">
-              <i class="bi bi-exclamation-octagon-fill ml-3"></i>
-              <p class="m-0">
-                Atention, you don't have a URL for your menu. <a class="d-inline" href="/business/edit">Click here</a> to add your custom URL so you can create a qr code and share your menu!
-              </p>
-            </div>
-          </div>
-          {% endif %}
-      </div>
-    </div>
+    <business-details>
+      <payload>{{ data.user | tojson }}</payload>
+    </business-details>
   </div>
   <div class="container mt-5">
     <h3 class="mb-3">
       Your menu items
     </h3>
-    <div class="d-flex justify-content-center justify-content-lg-between align-items-center flex-wrap my-3">
-      <div class="form-floating ml-md-auto w-100" style="max-width: 450px">
-        <input type="text" class="form-control" id="filter" placeholder="Filter..." gf-input />
-        <label for="filter">Filter</label>
-      </div>
-      <div>
-        <button is="btn-cp" class="me-2 mt-3 mt-lg-0" link="/category" variant="outline-primary">Categories</button>
-        <button is="btn-cp" class="me-2 mt-3 mt-lg-0" link="/category/new" variant="outline-primary">Add Category</button>
-        <button is="btn-cp" class="mt-3 mt-lg-0" link="/item/new" variant="outline-primary">Add New</button>
-      </div>
-    </div>
+    <menu-actions></menu-actions>
     <div>
       {%for item in data.user_items %}
         <div class="container px-0 pt-3">
@@ -94,6 +28,5 @@
       {% endfor %}
     </div>
   </div>
-  <generic-filter></generic-filter>
   {% include "components/flash_floating.html" %}
 {% endblock %}

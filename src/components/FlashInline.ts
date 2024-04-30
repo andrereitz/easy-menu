@@ -17,9 +17,7 @@ export class FlashInline extends HTMLElement {
   }
 
   connectedCallback() {
-    if (this.payload) {
-      this.render()
-    }
+    this.render()
   } 
 
   render() {

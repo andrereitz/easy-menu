@@ -2273,9 +2273,7 @@
       return JSON.parse(data);
     }
     connectedCallback() {
-      if (this.payload) {
-        this.render();
-      }
+      this.render();
     }
     render() {
       if (!this.payload)
@@ -2291,13 +2289,132 @@
   };
   customElements.define("flash-inline", FlashInline);
 
-  // src/components/GenericFilter.ts
+  // src/components/MenuItems.ts
   var import_masonry_layout = __toESM(require_masonry(), 1);
-  var GenericFilter = class extends HTMLElement {
+  var MenuItems = class extends HTMLElement {
     constructor() {
       super();
     }
+    get containers() {
+      return document.querySelectorAll("[gf-masonry]");
+    }
     connectedCallback() {
+      this.init();
+    }
+    init() {
+      if (!this.containers || this.containers.length == 0)
+        return;
+      Array.from(this.containers).map((container) => {
+        setTimeout(function() {
+          new import_masonry_layout.default(container, {
+            percentPosition: true
+          });
+        }, 300);
+      });
+    }
+  };
+  customElements.define("menu-items", MenuItems);
+
+  // src/components/NavBar.ts
+  var NavBar = class extends HTMLElement {
+    constructor() {
+      super();
+    }
+    get user() {
+      return this.getAttribute("data-user");
+    }
+    get page() {
+      return this.getAttribute("data-page");
+    }
+    connectedCallback() {
+      this.render();
+    }
+    render() {
+      const template = '\n      <nav class="navbar navbar-expand-lg bg-body-tertiary">\n        <div class="container p-lg-0">\n          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">\n            <span class="navbar-toggler-icon"></span>\n          </button>\n          <div class="collapse navbar-collapse mt-3 mt-lg-0" id="navbarSupportedContent">\n            <ul class="navbar-nav me-auto mb-2 mb-lg-0">\n              '.concat(this.user && '\n                <li class="nav-item">\n                  <a class="nav-link {% if url_for(request.endpoint) == \'/dashboard/\'  %} active {% endif %}" aria-current="page" href="/dashboard">Your Business</a>\n                </li>\n                <li class="nav-item dropdown">\n                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">\n                    Manage\n                  </a>\n                  <ul class="dropdown-menu">\n                    <li><a class="dropdown-item" href="/business/edit">Business Information</a></li>\n                    <li><a class="dropdown-item" href="/category">Categories</a></li>\n                    <li><hr class="dropdown-divider"></li>\n                    <li><a class="dropdown-item" href="/item/new">Add New Item</a></li>\n                  </ul>\n                </li>\n              ', '\n            </ul>\n            <ul class="navbar-nav mr-auto mb-2 mb-lg-0 d-flex justify-content-lg-end">\n              ').concat(this.user ? '\n                  <li class="nav-item">\n                    <a class="nav-link" href="/auth/logout">Logout</a>\n                  </li>\n                  ' : '\n                  <li class="nav-item">\n                    <a class="nav-link" href="/auth/login">Login</a>\n                  </li>\n                  ', "\n            </ul>\n          </div>\n        </div>\n      </nav>\n    ");
+      this.innerHTML = template;
+    }
+  };
+  customElements.define("nav-bar", NavBar);
+
+  // src/components/category/Badge.ts
+  var Badge = class extends HTMLElement {
+    constructor() {
+      super();
+      __publicField(this, "categoryTitle", null);
+      __publicField(this, "categoryID", null);
+    }
+    connectedCallback() {
+      this.categoryTitle = this.getAttribute("data-title");
+      this.categoryID = this.getAttribute("data-id") || null;
+      this.render();
+    }
+    render() {
+      const template = '\n      <a \n        href="/category/edit/'.concat(this.categoryID, '" \n        class="btn rounded px-3 py-1 text-nowrap" \n        style="background: var(--color-primary); color: var(--color-text-inverted)"\n        gf-match="').concat(this.categoryTitle, '" \n      >\n        <span gf-content>\n          ').concat(this.categoryTitle, "\n        </span>\n      </a>\n    ");
+      this.innerHTML = template;
+    }
+  };
+  customElements.define("category-badge", Badge);
+
+  // src/components/dashboard/BusinessDetails.ts
+  var BusinessDetails = class extends HTMLElement {
+    constructor() {
+      super();
+    }
+    set data(value) {
+      if (value && value.length > 0) {
+        this.setAttribute("data-payload", value);
+      }
+    }
+    get data() {
+      const data = this.getAttribute("data-payload");
+      if (!data)
+        return null;
+      return JSON.parse(data);
+    }
+    connectedCallback() {
+      var _a;
+      this.data = ((_a = this.querySelector("payload")) == null ? void 0 : _a.textContent) || null;
+      this.render();
+    }
+    render() {
+      var _a, _b, _c, _d, _e, _f, _g, _h;
+      const template = '\n      <h3 class="d-flex justify-content-between align-items-center flex-wrap flex-md-nowrap mb-3">\n        <span class="flex-sm-grow-1">\n          Your business details\n        </span>\n        <div class="my-3 my-md-0">\n          <button is="btn-cp" link="/business/edit" variant="outline-primary">Edit Information</button>\n        <div>\n      </h3>\n      <div class="container px-0">\n        <div class="row">\n          <div class="col col-12 col-md-6 fs-5 d-flex flex-column">\n            '.concat(((_a = this.data) == null ? void 0 : _a.business_logo) && '\n                <div class="mt-2 d-flex align-items-center gap-2">\n                  <img \n                    width="100%" height="auto"\n                    class="py-2 rounded"\n                    style="object-fit: contain; max-width: 200px; max-height: 76px;" \n                    src="/static/media/'.concat((_b = this.data) == null ? void 0 : _b.business_logo, '" \n                  />\n                </div>\n            '), "\n            ").concat(((_c = this.data) == null ? void 0 : _c.email) && '\n              <span class="mt-2">\n                Your email: '.concat(this.data.email, "\n              </span>\n            "), "\n            ").concat(((_d = this.data) == null ? void 0 : _d.business_name) && '\n              <span class="mt-2">\n                Your email: '.concat(this.data.business_name, "\n              </span>\n            "), "\n            ").concat(((_e = this.data) == null ? void 0 : _e.business_url) && '\n              <span class="mt-2">\n                Your email: '.concat(this.data.business_url, "\n              </span>\n            "), "\n            ").concat(((_f = this.data) == null ? void 0 : _f.business_color) && '\n              <div class="mt-2 d-flex align-items-center gap-2">\n                <span>Business Color: </span>\n                <span class="w-100 d-block rounded" style="background-color: '.concat((_g = this.data) == null ? void 0 : _g.business_color, '; height: 20px; max-width: 40px"></span>\n              </div>\n            '), "\n          </div>\n          ").concat(((_h = this.data) == null ? void 0 : _h.business_url) ? '\n            <a \n              href="/menu/{{data.user.business_url}}"\n              class="col col-12 col-md-6 d-flex flex-column align-items-md-end mt-2"\n            >\n              <img \n                width="100%" height="auto"\n                class="py-2 rounded"\n                style="object-fit: contain; max-width: 250px;" \n                src="/static/qrcodes/'.concat(this.data.id, '.png" \n              />\n            </a>\n          ') : '\n            <div class="col col-12 col-md-6 pt-2 px-2 pt-md-0">\n              <div class="alert alert-danger my-2 d-flex gap-2" role="alert">\n                <i class="bi bi-exclamation-octagon-fill ml-3"></i>\n                <p class="m-0">\n                  Atention, you don\'t have a URL for your menu. <a class="d-inline" href="/business/edit">Click here</a> to add your custom URL so you can create a qr code and share your menu!\n                </p>\n              </div>\n            </div>\n          ', "\n        </div>\n      </div>\n    ");
+      this.innerHTML = template;
+    }
+  };
+  customElements.define("business-details", BusinessDetails);
+
+  // src/components/dashboard/BusinessEdit.ts
+  var BusinessEdit = class extends HTMLElement {
+    constructor() {
+      super();
+    }
+    get data() {
+      const data = this.getAttribute("data-payload");
+      if (!data)
+        return null;
+      return JSON.parse(data);
+    }
+    set data(value) {
+      if (value) {
+        this.setAttribute("data-payload", value);
+      }
+    }
+    connectedCallback() {
+      this.render();
+    }
+    render() {
+      const template = "\n      Business edit information\n    ";
+      this.innerHTML = template;
+    }
+  };
+  customElements.define("business-edit", BusinessEdit);
+
+  // src/components/shared/GenericFilter.ts
+  var import_masonry_layout2 = __toESM(require_masonry(), 1);
+  var GenericFilter = class extends HTMLElement {
+    constructor() {
+      super();
       this.init();
     }
     init() {
@@ -2340,7 +2457,7 @@
       if (containers.length == 0)
         return;
       Array.from(containers).map((container) => {
-        new import_masonry_layout.default(container, {
+        new import_masonry_layout2.default(container, {
           percentPosition: true
         });
       });
@@ -2348,52 +2465,46 @@
   };
   customElements.define("generic-filter", GenericFilter);
 
-  // src/components/MenuItems.ts
-  var import_masonry_layout2 = __toESM(require_masonry(), 1);
-  var MenuItems = class extends HTMLElement {
+  // src/components/dashboard/MenuActions.ts
+  var MenuActions = class extends HTMLElement {
     constructor() {
       super();
-    }
-    get containers() {
-      return document.querySelectorAll("[gf-masonry]");
-    }
-    connectedCallback() {
-      this.init();
-    }
-    init() {
-      if (!this.containers || this.containers.length == 0)
-        return;
-      Array.from(this.containers).map((container) => {
-        setTimeout(function() {
-          new import_masonry_layout2.default(container, {
-            percentPosition: true
-          });
-        }, 300);
-      });
-    }
-  };
-  customElements.define("menu-items", MenuItems);
-
-  // src/components/NavBar.ts
-  var NavBar = class extends HTMLElement {
-    constructor() {
-      super();
-    }
-    get user() {
-      return this.getAttribute("data-user");
-    }
-    get page() {
-      return this.getAttribute("data-page");
+      __publicField(this, "filter", null);
     }
     connectedCallback() {
       this.render();
+      this.filter = new GenericFilter();
     }
     render() {
-      const template = '\n      <nav class="navbar navbar-expand-lg bg-body-tertiary">\n        <div class="container p-lg-0">\n          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">\n            <span class="navbar-toggler-icon"></span>\n          </button>\n          <div class="collapse navbar-collapse mt-3 mt-lg-0" id="navbarSupportedContent">\n            <ul class="navbar-nav me-auto mb-2 mb-lg-0">\n              '.concat(this.user && '\n                <li class="nav-item">\n                  <a class="nav-link {% if url_for(request.endpoint) == \'/dashboard/\'  %} active {% endif %}" aria-current="page" href="/dashboard">Your Business</a>\n                </li>\n                <li class="nav-item dropdown">\n                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">\n                    Manage\n                  </a>\n                  <ul class="dropdown-menu">\n                    <li><a class="dropdown-item" href="/business/edit">Business Information</a></li>\n                    <li><a class="dropdown-item" href="/category">Categories</a></li>\n                    <li><hr class="dropdown-divider"></li>\n                    <li><a class="dropdown-item" href="/item/new">Add New Item</a></li>\n                  </ul>\n                </li>\n              ', '\n            </ul>\n            <ul class="navbar-nav mr-auto mb-2 mb-lg-0 d-flex justify-content-lg-end">\n              ').concat(this.user ? '\n                  <li class="nav-item">\n                    <a class="nav-link" href="/auth/logout">Logout</a>\n                  </li>\n                  ' : '\n                  <li class="nav-item">\n                    <a class="nav-link" href="/auth/login">Login</a>\n                  </li>\n                  ', "\n            </ul>\n          </div>\n        </div>\n      </nav>\n    ");
+      const template = '\n      <div class="d-flex justify-content-center justify-content-lg-between align-items-center flex-wrap my-3">\n        <div class="form-floating ml-md-auto w-100 mt-3 mt-lg-0 order-2 order-lg-0" style="max-width: 450px">\n          <input type="text" class="form-control" id="filter" placeholder="Filter..." gf-input />\n          <label for="filter">Filter</label>\n        </div>\n        <div>\n          <button is="btn-cp" class="me-2 mt-3 mt-lg-0" link="/category" variant="outline-primary">Categories</button>\n          <button is="btn-cp" class="me-2 mt-3 mt-lg-0" link="/category/new" variant="outline-primary">Add Category</button>\n          <button is="btn-cp" class="mt-3 mt-lg-0" link="/item/new" variant="outline-primary">Add New</button>\n        </div>\n      </div>\n    ';
       this.innerHTML = template;
     }
   };
-  customElements.define("nav-bar", NavBar);
+  customElements.define("menu-actions", MenuActions);
+
+  // src/components/dashboard/MenuItem.ts
+  var MenuItem = class extends HTMLElement {
+    constructor() {
+      super();
+      __publicField(this, "data", null);
+    }
+    connectedCallback() {
+      this.classList.add("col-12", "col-md-6", "col-lg-4", "col-xl-3", "p-2");
+      const payload = this.querySelector("payload");
+      if (payload) {
+        this.data = JSON.parse(payload.textContent);
+      } else {
+        throw new Error("payload element not provided, can't get item data");
+      }
+      this.render();
+    }
+    render() {
+      var _a, _b, _c, _d, _e, _f;
+      const template = '\n      <div class="rounded content-block">\n        '.concat(((_a = this.data) == null ? void 0 : _a.image) ? '<img class="w-100" style="object-fit: cover;" src="/static/media/'.concat(this.data.image, '" />') : '<img class="w-100" style="object-fit: cover;" src="/static/images/no-image.png" />', '\n        <div>\n          <div class="d-flex align-items-center gap-2 p-3">\n            <h4 gf-content>').concat((_b = this.data) == null ? void 0 : _b.title, '</h4>\n            <span class="ms-auto">').concat((_c = this.data) == null ? void 0 : _c.price.toFixed(2), "</span>\n          </div>\n          ").concat(((_d = this.data) == null ? void 0 : _d.description) && '\n            <p class="px-3 pb-3">\n              '.concat(this.data.description, "\n            </p>\n          "), '\n        </div>\n        <div class="px-3 pb-3 d-flex justify-content-end gap-2">\n          <form action="/item/delete/').concat((_e = this.data) == null ? void 0 : _e.id, '" method="post">\n            <button is="btn-cp" type="submit" variant="primary">\n              <i class="bi bi-trash"></i>\n            </button>\n          </form>\n          <button is="btn-cp" link="/item/edit/').concat((_f = this.data) == null ? void 0 : _f.id, '" variant="primary">\n            <i class="bi bi-pencil-square"></i>\n          </button>\n        </div>\n      </div>\n    ');
+      this.innerHTML = template;
+    }
+  };
+  customElements.define("menu-item", MenuItem);
 
   // src/helpers.ts
   var import_lodash = __toESM(require_lodash3(), 1);
@@ -2456,7 +2567,7 @@
       this.registerListeners();
     }
     render() {
-      const template = '\n      <button is="btn-cp" style="color: var(--link-color)">\n        '.concat(this.innerHTML, "\n      </buton>\n    ");
+      const template = '\n      <button is="btn-cp" style="color: var(--link-color)">\n        <i class="bi bi-arrow-left fs-4"></i>\n      </buton>\n    ';
       this.innerHTML = template;
     }
     registerListeners() {
@@ -2467,44 +2578,25 @@
   };
   customElements.define("btn-back", ButtonGoBack);
 
-  // src/components/dashboard/MenuActions.ts
-  var MenuActions = class extends HTMLElement {
+  // src/components/shared/TitleBar.ts
+  var TitleBar = class extends HTMLElement {
     constructor() {
       super();
+      __publicField(this, "barTitle", null);
     }
     connectedCallback() {
+      this.barTitle = this.getAttribute("data-title") || null;
+      this.classList.add("d-flex", "gap-3", "p-2", "mb-2", "align-items-center", "w-100", "rounded");
+      this.style.background = "var(--color-primary)";
+      this.style.color = "white";
       this.render();
     }
     render() {
-      const template = '\n      <div class="d-flex justify-content-center justify-content-lg-between align-items-center flex-wrap my-3">\n        <div class="form-floating ml-md-auto w-100" style="max-width: 450px">\n          <input type="text" class="form-control" id="filter" placeholder="Filter..." gf-input />\n          <label for="filter">Filter</label>\n        </div>\n        <div>\n          <button is="btn-cp" class="me-2 mt-3 mt-lg-0" link="/category" variant="outline-primary">Categories</button>\n          <button is="btn-cp" class="me-2 mt-3 mt-lg-0" link="/category/new" variant="outline-primary">Add Category</button>\n          <button is="btn-cp" class="mt-3 mt-lg-0" link="/item/new" variant="outline-primary">Add New</button>\n        </div>\n      </div>\n    ';
+      const template = "\n      <btn-back></btn-back>\n      ".concat(this.barTitle ? '\n        <h2 class="fs-4 m-0 me-auto">'.concat(this.barTitle, "</h2>\n      ") : "", "\n      ").concat(this.innerHTML, "\n    ");
       this.innerHTML = template;
     }
   };
-  customElements.define("menu-actions", MenuActions);
-
-  // src/components/dashboard/MenuItem.ts
-  var MenuItem = class extends HTMLElement {
-    constructor() {
-      super();
-      __publicField(this, "data", null);
-    }
-    connectedCallback() {
-      this.classList.add("col-12", "col-md-6", "col-lg-4", "col-xl-3", "p-2");
-      const payload = this.querySelector("payload");
-      if (payload) {
-        this.data = JSON.parse(payload.textContent);
-      } else {
-        throw new Error("payload element not provided, can't get item data");
-      }
-      this.render();
-    }
-    render() {
-      var _a, _b, _c, _d, _e, _f;
-      const template = '\n      <div class="rounded content-block">\n        '.concat(((_a = this.data) == null ? void 0 : _a.image) ? '<img class="w-100" style="object-fit: cover;" src="/static/media/'.concat(this.data.image, '" />') : '<img class="w-100" style="object-fit: cover;" src="/static/images/no-image.png" />', '\n        <div>\n          <div class="d-flex align-items-center gap-2 p-3">\n            <h4 gf-content>').concat((_b = this.data) == null ? void 0 : _b.title, '</h4>\n            <span class="ms-auto">').concat((_c = this.data) == null ? void 0 : _c.price.toFixed(2), "</span>\n          </div>\n          ").concat(((_d = this.data) == null ? void 0 : _d.description) && '\n            <p class="px-3 pb-3">\n              '.concat(this.data.description, "\n            </p>\n          "), '\n        </div>\n        <div class="px-3 pb-3 d-flex justify-content-end gap-2">\n          <form action="/item/delete/').concat((_e = this.data) == null ? void 0 : _e.id, '" method="post">\n            <button is="btn-cp" type="submit" variant="primary">\n              <i class="bi bi-trash"></i>\n            </button>\n          </form>\n          <button is="btn-cp" link="/item/edit/').concat((_f = this.data) == null ? void 0 : _f.id, '" variant="primary">\n            <i class="bi bi-pencil-square"></i>\n          </button>\n        </div>\n      </div>\n    ');
-      this.innerHTML = template;
-    }
-  };
-  customElements.define("menu-item", MenuItem);
+  customElements.define("title-bar", TitleBar);
 })();
 /*! Bundled license information:
 

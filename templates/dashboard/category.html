@@ -1,18 +1,13 @@
 {% extends "layouts/default.html" %}
 
-{% block title %}Add new category{% endblock %}
-{% block form_title %}Add new category{% endblock %}
+{% block title %}All Categoies{% endblock %}
 
 {% block content %}
   <generic-filter></generic-filter>
   <div class="container mt-4 p-0 content-block">
-    <div class="d-flex gap-3 p-2 mb-2 align-items-center w-100 rounded" style="background: var(--color-primary); color: white">
-      <btn-back>
-        <i class="bi bi-arrow-left fs-4"></i>
-      </btn-back>
-      <h2 class="fs-4 m-0">Categories</h2>
-      <a href="/category/new" class="btn btn-light text-nowrap ms-auto">Add New</a>
-    </div>
+    <title-bar data-title="Categories">
+      <button is="btn-cp" link="/category/new" class="text-nowrap" variant="light">Add New</button>
+    </title-bar>
     <div class="d-flex justify-content-center mb-2 gap-3 p-3">
       <form class="w-100" style="max-width: 400px">
         <input name="filter_query" id="filter_query" type="text" class="form-control" placeholder="Filter..." gf-input>
@@ -21,16 +16,7 @@
     <div class="w-100 p-3">
       <div class="d-flex gap-2 flex-wrap">
         {% for cat in data.categories %}
-          <a 
-            href="/category/edit/{{ cat.id }}" 
-            class="btn rounded px-3 py-1 text-nowrap" 
-            style="background: var(--color-primary); color: var(--color-text-inverted)"
-            gf-match="{{ cat.title }}" 
-          >
-          <span gf-content>
-              {{cat.title}}
-            </span>
-          </a>
+          <category-badge data-title="{{ cat.title }}" data-id="{{ cat.id }}"></category-badge>
         {% endfor %}
       </div>
     </div>

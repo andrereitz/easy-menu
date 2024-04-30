@@ -12,9 +12,7 @@ import Masonry from 'masonry-layout'
 export class GenericFilter extends HTMLElement {
   constructor() {
     super()
-  }
 
-  connectedCallback() {
     this.init()
   }
 

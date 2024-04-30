@@ -11,7 +11,7 @@ export class ButtonGoBack extends HTMLElement {
   render() {
     const template = `
       <button is="btn-cp" style="color: var(--link-color)">
-        ${this.innerHTML}
+        <i class="bi bi-arrow-left fs-4"></i>
       </buton>
     `
 
