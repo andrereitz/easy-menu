@@ -71,7 +71,7 @@ export class BusinessDetails extends HTMLElement {
           </div>
           ${this.data?.business_url ? `
             <a 
-              href="/menu/{{data.user.business_url}}"
+              href="/menu/${this.data?.business_url}"
               class="col col-12 col-md-6 d-flex flex-column align-items-md-end mt-2"
             >
               <img 

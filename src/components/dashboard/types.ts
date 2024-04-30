@@ -6,3 +6,19 @@ export interface BusinessData {
   email: string,
   id: number,
 }
+
+export interface Category {
+  id: number,
+  title: string,
+  user: number
+}
+
+export interface MenuItem {
+  id: number,
+  user: number,
+  category: number,
+  title: string,
+  description: string,
+  price: number,
+  media_id: number,
+}

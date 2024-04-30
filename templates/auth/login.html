@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container-fluid d-flex justify-content-center">
   <form style="max-width: 450px" class="w-100 p-4 mt-5 shadow rounded content-block" method="post">
-    {% include "components/flash_inline.html" %}
+    <flash-inline data-payload='{{ get_flashed_messages(with_categories=true) | tojson }}'></flash-inline>
     <div class="form-floating mb-3">
       <input name="email" id="email" type="email" class="form-control" placeholder="">
       <label for="email">Email address</label>

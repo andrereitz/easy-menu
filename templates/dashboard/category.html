@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-  {% include "components/flash_floating.html" %}
+  <flash-floating data-payload='{{ get_flashed_messages(with_categories=true) | tojson}}'></flash-floating>
 {% endblock %}
 
 {% block submit_text %}Add{% endblock %}

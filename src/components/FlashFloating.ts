@@ -7,13 +7,13 @@ export class FlashFloating extends HTMLElement {
     return ['data-payload'];
   }
 
-  set payload(value: string[][]) {
+  set data(value: string[][]) {
     if(value.length > 0) {
      this.setAttribute('data-payload', JSON.stringify(value))
     }
   }
 
-  get payload(): (string[][] | null) {
+  get data(): (string[][] | null) {
     const data = this.getAttribute('data-payload');
     if(!data) return null;
 
@@ -26,15 +26,13 @@ export class FlashFloating extends HTMLElement {
   }
 
   connectedCallback() {
-    if(this.payload) {
-      this.render()
-    }
+    this.render()
   }
 
   render() {
-    if(!this.payload) return false;
+    if(!this.data || this.data.length === 0) return false;
     
-    const messages = this.payload.reduce((prev: string, curr: string[], index: number ) => {
+    const messages = this.data.reduce((prev: string, curr: string[], index: number ) => {
       const category = curr[0];
       const text = curr[1];
 

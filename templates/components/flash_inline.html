@@ -1,6 +1,0 @@
-{% with messages = get_flashed_messages(with_categories=true) %}
-  <flash-inline></flash-inline>
-  <script>
-    document.querySelector('flash-inline').setAttribute('data-payload', JSON.stringify({{ messages | tojson }}))
-  </script>
-{% endwith %}

@@ -28,7 +28,7 @@ def index():
       "title": row["title"], 
       "description": row["description"], 
       "price": row["price"],
-      "image": media_data[row["media_id"]],
+      "image": media_data[row["media_id"]] if row["media_id"] in media_data else None,
     }
     
     if row["category"] and row["category"] != 'NULL':

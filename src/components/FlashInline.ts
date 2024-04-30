@@ -3,13 +3,13 @@ export class FlashInline extends HTMLElement {
     super()
   }
 
-  set payload(value: string[][]) {
+  set data(value: string[][]) {
     if(value.length > 0) {
-      this.setAttribute('data-payload', JSON.stringify(value))
+     this.setAttribute('data-payload', JSON.stringify(value))
     }
   }
 
-  get payload(): (string[][] | null) {
+  get data(): (string[][] | null) {
     const data = this.getAttribute('data-payload');
     if(!data) return null;
 
@@ -21,9 +21,9 @@ export class FlashInline extends HTMLElement {
   } 
 
   render() {
-    if(!this.payload) return false;
+    if(!this.data) return false;
 
-    const messages = this.payload.reduce((prev: string, curr: string[], index: number ) => {
+    const messages = this.data.reduce((prev: string, curr: string[], index: number ) => {
       const category = curr[0];
       const text = curr[1];
 

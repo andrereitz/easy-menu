@@ -2216,12 +2216,12 @@
     static get observedAttributes() {
       return ["data-payload"];
     }
-    set payload(value) {
+    set data(value) {
       if (value.length > 0) {
         this.setAttribute("data-payload", JSON.stringify(value));
       }
     }
-    get payload() {
+    get data() {
       const data = this.getAttribute("data-payload");
       if (!data)
         return null;
@@ -2232,14 +2232,12 @@
       this.render();
     }
     connectedCallback() {
-      if (this.payload) {
-        this.render();
-      }
+      this.render();
     }
     render() {
-      if (!this.payload)
+      if (!this.data || this.data.length === 0)
         return false;
-      const messages = this.payload.reduce((prev, curr, index) => {
+      const messages = this.data.reduce((prev, curr, index) => {
         const category = curr[0];
         const text = curr[1];
         const template = '\n        <div \n          role="alert" \n          class="alert alert-'.concat(category, ' mb-3 d-flex gap-2 position-fixed start-50 translate-middle-x floating-message" \n          style="max-width: 600px; transition: all .4s ease-out; bottom: ').concat(index * 60, 'px !important"\n        >\n          ').concat(category === "success" ? '<i class="bi bi-check-circle-fill"></i>' : category === "info" ? '<i class="bi bi-info-circle-fill"></i>' : '<i class="bi bi-exclamation-octagon-fill ml-3"></i>', "\n          ").concat(text && text, "\n        </div>\n      ");
@@ -2261,12 +2259,12 @@
     constructor() {
       super();
     }
-    set payload(value) {
+    set data(value) {
       if (value.length > 0) {
         this.setAttribute("data-payload", JSON.stringify(value));
       }
     }
-    get payload() {
+    get data() {
       const data = this.getAttribute("data-payload");
       if (!data)
         return null;
@@ -2276,9 +2274,9 @@
       this.render();
     }
     render() {
-      if (!this.payload)
+      if (!this.data)
         return false;
-      const messages = this.payload.reduce((prev, curr, index) => {
+      const messages = this.data.reduce((prev, curr, index) => {
         const category = curr[0];
         const text = curr[1];
         const template = '\n        <div class="alert alert-'.concat(category, ' mt-2 mb-3 d-flex gap-2" role="alert">\n          ').concat(category === "success" ? '<i class="bi bi-check-circle-fill"></i>' : category === "info" ? '<i class="bi bi-info-circle-fill"></i>' : '<i class="bi bi-exclamation-octagon-fill ml-3"></i>', "\n          ").concat(text && text, "\n        </div>\n      ");
@@ -2377,8 +2375,8 @@
       this.render();
     }
     render() {
-      var _a, _b, _c, _d, _e, _f, _g, _h;
-      const template = '\n      <h3 class="d-flex justify-content-between align-items-center flex-wrap flex-md-nowrap mb-3">\n        <span class="flex-sm-grow-1">\n          Your business details\n        </span>\n        <div class="my-3 my-md-0">\n          <button is="btn-cp" link="/business/edit" variant="outline-primary">Edit Information</button>\n        <div>\n      </h3>\n      <div class="container px-0">\n        <div class="row">\n          <div class="col col-12 col-md-6 fs-5 d-flex flex-column">\n            '.concat(((_a = this.data) == null ? void 0 : _a.business_logo) && '\n                <div class="mt-2 d-flex align-items-center gap-2">\n                  <img \n                    width="100%" height="auto"\n                    class="py-2 rounded"\n                    style="object-fit: contain; max-width: 200px; max-height: 76px;" \n                    src="/static/media/'.concat((_b = this.data) == null ? void 0 : _b.business_logo, '" \n                  />\n                </div>\n            '), "\n            ").concat(((_c = this.data) == null ? void 0 : _c.email) && '\n              <span class="mt-2">\n                Your email: '.concat(this.data.email, "\n              </span>\n            "), "\n            ").concat(((_d = this.data) == null ? void 0 : _d.business_name) && '\n              <span class="mt-2">\n                Your email: '.concat(this.data.business_name, "\n              </span>\n            "), "\n            ").concat(((_e = this.data) == null ? void 0 : _e.business_url) && '\n              <span class="mt-2">\n                Your email: '.concat(this.data.business_url, "\n              </span>\n            "), "\n            ").concat(((_f = this.data) == null ? void 0 : _f.business_color) && '\n              <div class="mt-2 d-flex align-items-center gap-2">\n                <span>Business Color: </span>\n                <span class="w-100 d-block rounded" style="background-color: '.concat((_g = this.data) == null ? void 0 : _g.business_color, '; height: 20px; max-width: 40px"></span>\n              </div>\n            '), "\n          </div>\n          ").concat(((_h = this.data) == null ? void 0 : _h.business_url) ? '\n            <a \n              href="/menu/{{data.user.business_url}}"\n              class="col col-12 col-md-6 d-flex flex-column align-items-md-end mt-2"\n            >\n              <img \n                width="100%" height="auto"\n                class="py-2 rounded"\n                style="object-fit: contain; max-width: 250px;" \n                src="/static/qrcodes/'.concat(this.data.id, '.png" \n              />\n            </a>\n          ') : '\n            <div class="col col-12 col-md-6 pt-2 px-2 pt-md-0">\n              <div class="alert alert-danger my-2 d-flex gap-2" role="alert">\n                <i class="bi bi-exclamation-octagon-fill ml-3"></i>\n                <p class="m-0">\n                  Atention, you don\'t have a URL for your menu. <a class="d-inline" href="/business/edit">Click here</a> to add your custom URL so you can create a qr code and share your menu!\n                </p>\n              </div>\n            </div>\n          ', "\n        </div>\n      </div>\n    ");
+      var _a, _b, _c, _d, _e, _f, _g, _h, _i;
+      const template = '\n      <h3 class="d-flex justify-content-between align-items-center flex-wrap flex-md-nowrap mb-3">\n        <span class="flex-sm-grow-1">\n          Your business details\n        </span>\n        <div class="my-3 my-md-0">\n          <button is="btn-cp" link="/business/edit" variant="outline-primary">Edit Information</button>\n        <div>\n      </h3>\n      <div class="container px-0">\n        <div class="row">\n          <div class="col col-12 col-md-6 fs-5 d-flex flex-column">\n            '.concat(((_a = this.data) == null ? void 0 : _a.business_logo) && '\n                <div class="mt-2 d-flex align-items-center gap-2">\n                  <img \n                    width="100%" height="auto"\n                    class="py-2 rounded"\n                    style="object-fit: contain; max-width: 200px; max-height: 76px;" \n                    src="/static/media/'.concat((_b = this.data) == null ? void 0 : _b.business_logo, '" \n                  />\n                </div>\n            '), "\n            ").concat(((_c = this.data) == null ? void 0 : _c.email) && '\n              <span class="mt-2">\n                Your email: '.concat(this.data.email, "\n              </span>\n            "), "\n            ").concat(((_d = this.data) == null ? void 0 : _d.business_name) && '\n              <span class="mt-2">\n                Your email: '.concat(this.data.business_name, "\n              </span>\n            "), "\n            ").concat(((_e = this.data) == null ? void 0 : _e.business_url) && '\n              <span class="mt-2">\n                Your email: '.concat(this.data.business_url, "\n              </span>\n            "), "\n            ").concat(((_f = this.data) == null ? void 0 : _f.business_color) && '\n              <div class="mt-2 d-flex align-items-center gap-2">\n                <span>Business Color: </span>\n                <span class="w-100 d-block rounded" style="background-color: '.concat((_g = this.data) == null ? void 0 : _g.business_color, '; height: 20px; max-width: 40px"></span>\n              </div>\n            '), "\n          </div>\n          ").concat(((_h = this.data) == null ? void 0 : _h.business_url) ? '\n            <a \n              href="/menu/'.concat((_i = this.data) == null ? void 0 : _i.business_url, '"\n              class="col col-12 col-md-6 d-flex flex-column align-items-md-end mt-2"\n            >\n              <img \n                width="100%" height="auto"\n                class="py-2 rounded"\n                style="object-fit: contain; max-width: 250px;" \n                src="/static/qrcodes/').concat(this.data.id, '.png" \n              />\n            </a>\n          ') : '\n            <div class="col col-12 col-md-6 pt-2 px-2 pt-md-0">\n              <div class="alert alert-danger my-2 d-flex gap-2" role="alert">\n                <i class="bi bi-exclamation-octagon-fill ml-3"></i>\n                <p class="m-0">\n                  Atention, you don\'t have a URL for your menu. <a class="d-inline" href="/business/edit">Click here</a> to add your custom URL so you can create a qr code and share your menu!\n                </p>\n              </div>\n            </div>\n          ', "\n        </div>\n      </div>\n    ");
       this.innerHTML = template;
     }
   };
@@ -2388,6 +2386,7 @@
   var BusinessEdit = class extends HTMLElement {
     constructor() {
       super();
+      __publicField(this, "getRemoveButton", () => this.querySelector("#business-edit-remove-image"));
     }
     get data() {
       const data = this.getAttribute("data-payload");
@@ -2402,10 +2401,37 @@
     }
     connectedCallback() {
       this.render();
+      console.log(this.getRemoveButton());
+      this.registerListeners();
     }
     render() {
-      const template = "\n      Business edit information\n    ";
+      var _a, _b, _c, _d, _e;
+      const template = "\n      ".concat(((_a = this.data) == null ? void 0 : _a.business_logo) ? '\n        <div class="mb-3 d-flex justify-content-center w-100 rounded p-3 position-relative" style="background: var(--bg-fade)">\n          <div class="position-absolute top-0 start-100 translate-middle">\n            <div id="business-edit-remove-image" class="btn btn-danger rounded-pill">\n              <i class="bi bi-trash"></i>\n            </div>\n          </div>\n          <img src="/static/media/'.concat(this.data.business_logo, '" style="max-width: 100%; object-fit: contain" />\n        </div>      \n      ') : '\n          <div class="mb-3">\n            <label for="business_logo" class="form-label">Upload Business Logo</label>\n            <input class="form-control" type="file" id="business_logo" name="business_logo">\n          </div>\n          <div id="passwordHelpBlock" class="form-text">\n            For better results use a 200x80 image (or viewport).\n          </div>\n      ', '\n      <div class="mb-3">\n        <label for="business_color" class="form-label">Accent Color</label>\n        <input \n          type="color" \n          class="form-control form-control-color" \n          id="business_color" \n          name="business_color" \n          value="').concat(((_b = this.data) == null ? void 0 : _b.business_color) ? this.data.business_color : "#404040", '" \n          title="Choose your color"\n        >\n      </div>\n      <div class="form-floating mb-3">\n        <input name="email" id="email" type="email" class="form-control" value="').concat((_c = this.data) == null ? void 0 : _c.email, '" placeholder="">\n        <label for="email">Email address</label>\n      </div>\n      <div class="form-floating mb-3">\n        <input name="business_name" id="business_name" type="text" class="form-control" value="').concat((_d = this.data) == null ? void 0 : _d.business_name, '"  placeholder="">\n        <label for="business_name">Business name</label>\n      </div>\n      <div class="form-floating mb-3">\n        <input name="business_url" id="business_url" type="text" class="form-control" value="').concat((_e = this.data) == null ? void 0 : _e.business_url, '"  placeholder="">\n        <label for="business_url">Business URL</label>\n        <div id="businessUrlHelpBlock" class="form-text">\n          Business URL is where you menu will be acessible in the browser. Ex: /business-url\n        </div>\n      </div>\n    ');
       this.innerHTML = template;
+    }
+    registerListeners() {
+      var _a;
+      const removeButton = this.getRemoveButton();
+      if (!removeButton || !((_a = this.data) == null ? void 0 : _a.business_logo))
+        return false;
+      removeButton.addEventListener("click", (e) => {
+        var _a2;
+        e.preventDefault();
+        fetch("/business/remove-image", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            url: (_a2 = this.data) == null ? void 0 : _a2.business_logo
+          })
+        }).then((res) => res.json()).then((res) => {
+          console.log(res);
+          if (res.code === 200) {
+            location.reload();
+          }
+        });
+      });
     }
   };
   customElements.define("business-edit", BusinessEdit);
@@ -2505,6 +2531,96 @@
     }
   };
   customElements.define("menu-item", MenuItem);
+
+  // src/components/dashboard/MenuItemEdit.ts
+  var MenuItemEdit = class extends HTMLElement {
+    constructor() {
+      super();
+      __publicField(this, "getRemoveButton", () => this.querySelector("#menu-item-edit-remove-button"));
+    }
+    get data() {
+      const data = this.getAttribute("data-payload");
+      if (!data)
+        return null;
+      return JSON.parse(data);
+    }
+    set data(value) {
+      if (value) {
+        this.setAttribute("data-payload", value);
+      }
+    }
+    connectedCallback() {
+      this.render();
+      this.registerListeners();
+    }
+    render() {
+      var _a, _b, _c, _d, _e;
+      const template = "\n      ".concat(((_a = this.data) == null ? void 0 : _a.item_image) ? '\n        <div class="mb-3 d-flex justify-content-center w-100 rounded p-3 position-relative" style="background: var(--bg-fade)">\n          <div class="position-absolute top-0 start-100 translate-middle">\n            <div id="menu-item-edit-remove-button" class="btn btn-danger rounded-pill">\n              <i class="bi bi-trash"></i>\n            </div>\n          </div>\n          <img src="/static/media/'.concat(this.data.item_image, '" style="max-width: 100%; object-fit: contain" />\n        </div>\n      ') : '\n        <div class="mb-3">\n          <label for="item_image" class="form-label">Upload image</label>\n          <input class="form-control" type="file" id="item_image" name="item_image">\n        </div>\n      ', "\n      ").concat(((_b = this.data) == null ? void 0 : _b.categories) && this.data.categories.length > 0 ? '\n        <select class="form-select mb-3" name="category" aria-label="Default select example">\n          <option>Uncategorized</option>\n          '.concat(this.data.categories.map((category) => {
+        var _a2;
+        return '<option value="'.concat(category.id, '" ').concat(((_a2 = this.data) == null ? void 0 : _a2.item_data.category) === category.id ? "selected" : "", ">").concat(category.title, "</option>");
+      }), "\n        </select>\n      ") : '\n        <div class="alert alert-danger mb-3 d-flex gap-2" role="alert">\n          <i class="bi bi-exclamation-octagon-fill ml-3"></i>\n          <p class="m-0">\n            You don\'t have any category. <a class="d-inline" href="/category/new">Create a category</a> before adding new items to your menu!\n          </p>\n        </div>\n      ', '\n      <div class="form-floating mb-3">\n        <input name="title" id="title" type="text" class="form-control" placeholder="" value="').concat((_c = this.data) == null ? void 0 : _c.item_data.title, '">\n        <label for="title">Title</label>\n      </div>\n      <div class="form-floating mb-3">\n        <textarea name="description" id="description" class="form-control" style="height: 150px" placeholder="">').concat((_d = this.data) == null ? void 0 : _d.item_data.description.trim(), '</textarea>\n        <label for="description">Description</label>\n      </div>\n      <div class="mb-3">\n        <label class="mb-3" for="price">Price</label>\n        <div class="input-group">\n          <span class="input-group-text" id="basic-addon1">$</span>\n          <input name="price" id="price" type="text" class="form-control" placeholder="" value=').concat((_e = this.data) == null ? void 0 : _e.item_data.price.toFixed(2), ">\n        </div>\n      </div>\n    ");
+      this.innerHTML = template;
+    }
+    registerListeners() {
+      var _a, _b;
+      const removeButton = this.getRemoveButton();
+      if (!removeButton)
+        return false;
+      if (!((_a = this.data) == null ? void 0 : _a.item_data.media_id))
+        return false;
+      if (!((_b = this.data) == null ? void 0 : _b.item_data.id))
+        return false;
+      removeButton.addEventListener("click", (e) => {
+        var _a2, _b2;
+        e.preventDefault();
+        fetch("/item/remove-image", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            id: (_a2 = this.data) == null ? void 0 : _a2.item_data.media_id,
+            itemId: (_b2 = this.data) == null ? void 0 : _b2.item_data.id
+          })
+        }).then((res) => res.json()).then((res) => {
+          console.log(res);
+          if (res.code === 200) {
+            location.reload();
+          }
+        });
+      });
+    }
+  };
+  customElements.define("menu-item-edit", MenuItemEdit);
+
+  // src/components/dashboard/MenuItemNew.ts
+  var MenuItemNew = class extends HTMLElement {
+    constructor() {
+      super();
+    }
+    get data() {
+      const data = this.getAttribute("data-payload");
+      if (!data)
+        return null;
+      return JSON.parse(data);
+    }
+    set data(value) {
+      if (value) {
+        this.setAttribute("data-payload", value);
+      }
+    }
+    connectedCallback() {
+      this.render();
+    }
+    render() {
+      var _a, _b;
+      const template = '\n      <div class="mb-3">\n        <label for="item_image" class="form-label">Item Image</label>\n        <input class="form-control" type="file" id="item_image" name="item_image">\n      </div> \n      '.concat(((_a = this.data) == null ? void 0 : _a.categories) && ((_b = this.data) == null ? void 0 : _b.categories.length) > 0 ? '\n        <select class="form-select mb-3" name="category" aria-label="Default select example">\n          <option selected>Category</option>\n          '.concat(this.data.categories.map((category) => {
+        return '<option value="'.concat(category.id, '">').concat(category.title, "</option>");
+      }), "\n        </select>\n      ") : '\n        <div class="alert alert-danger mb-3 d-flex gap-2" role="alert">\n          <i class="bi bi-exclamation-octagon-fill ml-3"></i>\n          <p class="m-0">\n            You don\'t have any category. <a class="d-inline" href="/category/new">Create a category</a> to organize your menu!\n          </p>\n        </div>\n      ', '\n      <div class="form-floating mb-3">\n        <input name="title" id="title" type="text" class="form-control" placeholder="">\n        <label for="title">Title</label>\n      </div>\n      <div class="form-floating mb-3">\n        <textarea name="description" id="description" class="form-control" style="height: 150px" placeholder=""></textarea>\n        <label for="description">Description</label>\n      </div>\n      <div class="mb-3">\n        <label class="mb-3" for="price">Price</label>\n        <div class="input-group">\n          <span class="input-group-text" id="basic-addon1">$</span>\n          <input name="price" id="price" type="number" step=\'0.01\' value=\'0.00\' class="form-control" placeholder="">\n        </div>\n      </div>\n    ');
+      this.innerHTML = template;
+    }
+  };
+  customElements.define("menu-item-new", MenuItemNew);
 
   // src/helpers.ts
   var import_lodash = __toESM(require_lodash3(), 1);

@@ -17,7 +17,7 @@
   <div style="max-width: 500px" class="container-fluid d-flex flex-column justify-content-center shadow rounded content-block mt-5 p-0">
     <title-bar data-title="{% block form_title %}{% endblock %}"></title-bar>
     <form class="w-100 p-4" enctype="multipart/form-data" method="post">
-      {% include "components/flash_inline.html" %}
+      <flash-inline data-payload='{{ get_flashed_messages(with_categories=true) | tojson }}'></flash-inline>
 
       {% block content %}{% endblock %}
 
