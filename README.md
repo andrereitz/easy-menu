@@ -5,8 +5,18 @@
 Easy Menu is the final project of CS50X. To see a working version of the project check out: http://andrereitz.pythonanywhere.com/
 
 ## Running project
-The project is settup to run in a Python virtual environment (venv).
-Before running any command, activate python venv using ` . .venv/bin/activate `
+
+### Initial setup
+Create a virtual environment witht he desired python version `python3.12 -m venv .venv`  
+Install dependecies `. .venv/bin/activate && pip install -r requirements.txt`  
+Install node modules (For web components build) `npm install`
+
+### Developing
+The project is setted up to run in a Python virtual environment (venv).
+Before running any command, activate python venv using ` . .venv/bin/activate `  
+Init Flash ` flash run `
+
+Alternatively you can run the npm script for the server `npm run dev:server`
 
 ## Database Schema
 ```

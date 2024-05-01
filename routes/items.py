@@ -82,7 +82,7 @@ def new():
         return redirect("/dashboard")
       
       except Exception as err:
-        flash(err, "danger")
+        flash(str(err), "danger")
         
         return redirect("/item/new") 
       
@@ -165,11 +165,11 @@ def edit(item):
         ))
         db.commit()
         
-        flash(f"Item {request.form['title']} editted!", "success")
+        flash(f"Item {request.form['title']} updated!", "success")
         return redirect("/dashboard")
       
       except Exception as err:
-        flash(err, "danger")
+        flash(str(err), "danger")
         
         return redirect(f"/item/edit/{item}") 
       

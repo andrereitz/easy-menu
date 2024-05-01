@@ -1,3 +1,8 @@
+# Customs
+node_modules
+flask_session/*
+static/js/bundle.js.map
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

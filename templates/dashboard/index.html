@@ -1,135 +1,32 @@
 {% extends "layouts/default.html" %}
 
 {% block content %}
-  {% include "components/generic_filter.html" %}
   <div class="container content-block rounded p-3">
-    <h3 class="d-flex justify-content-between align-items-center flex-wrap flex-md-nowrap mb-3">
-      <span class="flex-sm-grow-1">
-        Your business details
-      </span>
-      <div class="my-3 my-md-0">
-        <a href="/business/edit" class="btn btn-outline-primary">Edit Information</a>
-      <div>
-    </h3>
-    <div class="container px-0">
-      <div class="row">
-        <div class="col col-12 col-md-6 fs-5 d-flex flex-column">
-          {% if data.user.business_logo %}
-            <div class="mt-2 d-flex align-items-center gap-2">
-              <img 
-                width="100%" height="auto"
-                class="py-2 rounded"
-                style="object-fit: contain; max-width: 200px; max-height: 76px;" 
-                src="/static/media/{{ data.user.business_logo }}" 
-              />
-            </div>
-          {% endif %}
-          <span class="mt-2">
-            Your email: {{ data.user.email }}
-          </span>
-          <span class="mt-2">
-            Business name: {{ data.user.business_name }}
-          </span>
-          <span class="mt-2">
-            Business URL: {{ data.user.business_url }}
-          </span>
-          <div class="mt-2 d-flex align-items-center gap-2">
-            <span>Business Color: </span>
-            <span class="w-100 d-block rounded" style="background-color: {{ data.user.business_color }}; height: 20px; max-width: 40px"></span>
-          </div>
-        </div>
-        {% if data.user.business_url %}
-          <a 
-            href="/menu/{{data.user.business_url}}"
-            class="col col-12 col-md-6 d-flex flex-column align-items-md-end mt-2"
-          >
-            <img 
-              width="100%" height="auto"
-              class="py-2 rounded"
-              style="object-fit: contain; max-width: 250px;" 
-              src="/static/qrcodes/{{ data.user.id }}.png" 
-            />
-          </a>
-          {% else %}
-          <div class="col col-12 col-md-6 pt-2 px-2 pt-md-0">
-            <div class="alert alert-danger my-2 d-flex gap-2" role="alert">
-              <i class="bi bi-exclamation-octagon-fill ml-3"></i>
-              <p class="m-0">
-                Atention, you don't have a URL for your menu. <a class="d-inline" href="/business/edit">Click here</a> to add your custom URL so you can create a qr code and share your menu!
-              </p>
-            </div>
-          </div>
-          {% endif %}
-      </div>
-    </div>
+    <business-details>
+      <payload>{{ data.user | tojson }}</payload>
+    </business-details>
   </div>
   <div class="container mt-5">
-    <h3 class="d-flex justify-content-between align-items-center flex-wrap flex-md-nowrap mb-3">
-      <span class="flex-sm-grow-1">
-        Your menu items
-      </span>
-      <div class="my-3 my-md-0">
-        <a href="/category" class="btn btn-outline-primary">Categories</a>
-        <a href="/category/new" class="btn btn-outline-primary">Add Category</a>
-        <a href="/item/new" class="btn btn-outline-primary">Add New</a>
-      <div>
+    <h3 class="mb-3">
+      Your menu items
     </h3>
-    <div class="form-floating col col-md-6 mx-md-auto">
-      <input type="text" class="form-control" id="filter" placeholder="Filter..." gf-input>
-      <label for="filter">Filter</label>
-    </div>
+    <menu-actions></menu-actions>
     <div>
       {%for item in data.user_items %}
         <div class="container px-0 pt-3">
           <h3 name="{{ item }}">{{ item }}</h3>
-          <div class="row" gf-masonry>
+          <menu-items class="row" gf-masonry>
             {% for item_data in data.user_items[item] %}
-              <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-2" gf-match="{{item_data.title}}">
-                <div class="rounded content-block">
-                  {% if data.images[item_data.image] %}
-                    <img class="w-100" style="object-fit: cover;" src="/static/media/{{ data.images[item_data.image] }}" />
-                  {% else %}
-                    <img class="w-100" style="object-fit: cover;" src="/static/images/no-image.png" />
-                  {% endif %}
-                  <div>
-                    <div class="d-flex align-items-center gap-2 p-3">
-                      <h4 gf-content>{{ item_data.title }}</h4>
-                      <span class="ms-auto">{{ item_data.price | usd }}</span>
-                    </div>
-                    {% if item_data.description %}
-                      <p class="px-3 pb-3">
-                        {{ item_data.description }}
-                      </p>
-                    {% endif %}
-                  </div>
-                  <div class="px-3 pb-3 d-flex justify-content-end gap-2">
-                    <form action="/item/delete/{{ item_data.id }}" method="post">
-                      <button type="submit" class="btn btn-primary" href="/item/delete/{{ item_data.id }}"><i class="bi bi-trash"></i></button>
-                    </form>
-                    <a class="btn btn-primary" href="/item/edit/{{ item_data.id }}"><i class="bi bi-pencil-square"></i></a>
-                  </div>
-                </div>
-              </div>
+              <menu-item data-item-data="{{item_data | tojson}}" gf-match="{{item_data.title}}">
+                <payload>
+                  {{item_data | tojson}}
+                </payload>
+              </menu-item>
             {% endfor %}
-            </div>
+          </menu-items>
         </div>
       {% endfor %}
     </div>
   </div>
-  {% include "components/flash_floating.html" %}
-  <script>
-    document.addEventListener("DOMContentLoaded", (event) => {
-      const containers = document.querySelectorAll('[gf-masonry]')
-      if (containers.length == 0) return;
-
-      Array.from(containers).map(container => {
-        setTimeout(function(){
-          new Masonry(container, {
-            percentPosition: true
-          })
-        }, 300)
-      })
-    })
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+  <flash-floating data-payload='{{ get_flashed_messages(with_categories=true) | tojson}}'></flash-floating>
 {% endblock %}

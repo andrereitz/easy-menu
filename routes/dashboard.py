@@ -28,9 +28,9 @@ def index():
       "title": row["title"], 
       "description": row["description"], 
       "price": row["price"],
-      "image": row["media_id"],
+      "image": media_data[row["media_id"]] if row["media_id"] in media_data else None,
     }
-
+    
     if row["category"] and row["category"] != 'NULL':
       cat = categories_data[row["category"]]
       
@@ -49,7 +49,6 @@ def index():
     "user": user_data,
     "user_items": items_data if len(items_data) else [],
     "categories": categories_data if len(categories_data) else [],
-    "images": media_data if len(media_data) else [],
   }
     
   return render_template("dashboard/index.html", data=dashboard_data)
